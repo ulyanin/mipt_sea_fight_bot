@@ -110,7 +110,7 @@ def show_keyboard_field(message):
     bot.send_message(message.chat.id, text='make your choice', reply_markup=markup)
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=["start"])
 @arguments_types(int)
 @exception_catcher
 def start_the_game(message, field_size=10):
@@ -131,6 +131,23 @@ def start_the_game(message, field_size=10):
         start_new_game(message, field_size)
 
 
+@bot.message_handler(commands=["restart"])
+@arguments_types(int)
+@exception_catcher
+def restart_the_game(message, field_size=10):
+    """
+    starting the sea fight game with user or chat
+    :param message
+    :param field_size
+    :return
+    """
+    field_size = max(9, field_size)
+    session_id = message.chat.id
+    storage.end_the_game(session_id)
+    logger.debug("restarting")
+    start_new_game(message, field_size)
+
+
 @bot.message_handler(commands=["random"])
 @exception_catcher
 def random_ships_arrangement(message):
@@ -145,7 +162,6 @@ def random_ships_arrangement(message):
                        caption="successfully generated",
                        photo=get_current_board(session))
         show_keyboard_field(message)
-        # show_inline_field(message)
     else:
         bot.reply_to(message, "unavailable action")
 
@@ -156,12 +172,15 @@ def random_ships_arrangement(message):
     session = message.chat.id
     logger.debug("{} is doing random ships arrangement".format(session))
     if storage.get(session, "ships_arrangement"):
-        bot.reply_to(message, "not implemented yet")
+        bot.reply_to(message, "not implemented yet, using /random")
         field_size = storage.get(session, "field_size")
         field = sea_fight_logic.generate_random_field(field_size)
         storage.put(session, "user", field)
         storage.delete(session, "ships_arrangement")
-        bot.send_message(message.chat.id, "successfully generated")
+        bot.send_photo(message.chat.id,
+                       caption="successfully generated",
+                       photo=get_current_board(session))
+        show_keyboard_field(message)
     else:
         bot.reply_to(message, text="unavailable action")
 
@@ -176,7 +195,7 @@ def end_game(message):
         bot.send_message(message.chat.id, "sorry, but you have not got any started game")
 
 
-@bot.message_handler(commands=["show_my_board"])
+@bot.message_handler(commands=["show_my_board", "continue"])
 def show_my_board(message):
     session = message.chat.id
     bot.send_photo(chat_id=message.chat.id, photo=get_current_board(session))
