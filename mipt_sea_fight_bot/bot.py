@@ -14,7 +14,7 @@ import sea_fight_logic
 
 logger = telebot.logger
 telebot.logger.setLevel(logging.DEBUG)
-bot = telebot.TeleBot(config.token)
+bot = telebot.AsyncTeleBot(config.token)
 storage = key_value_storage.Storage()
 
 
@@ -50,7 +50,7 @@ def arguments_types(*arg_types):
     def decorator(func):
         def wrapper(message, **kwargs):
             parsed = message.text.split()[1:]
-            print(parsed)
+            logger.debug(parsed)
             parsed = [type_(param) for type_, param in zip(arg_types, parsed)]
             return func(message, *parsed, **kwargs)
         return wrapper
@@ -122,7 +122,6 @@ def start_the_game(message, field_size=10):
     """
     field_size = max(9, field_size)
     session_id = message.chat.id
-    print(message)
     if storage.is_already_started(session_id):
         logger.debug("already started")
         bot.send_message(message.chat.id, messages.is_already_started)
@@ -196,6 +195,7 @@ def end_game(message):
 
 
 @bot.message_handler(commands=["show_my_board", "continue"])
+@exception_catcher
 def show_my_board(message):
     session = message.chat.id
     bot.send_photo(chat_id=message.chat.id, photo=get_current_board(session))
@@ -325,7 +325,6 @@ def repeat_all_messages(message):
     :param message:
     :return:
     """
-    print("repeat:", message)
     # markup = types.ReplyKeyboardMarkup()
     # field_size = storage.get(session, "field_size")
     # field = storage.get(session, "bot_stricken")
