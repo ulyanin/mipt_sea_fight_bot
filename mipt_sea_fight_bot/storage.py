@@ -40,16 +40,22 @@ class Storage:
         self.put(session_id, "field_size", field_size)
         self.put(session_id, "user", self.create_field_(field_size))
         self.put(session_id, "bot", self.create_field_(field_size))
+        self.put(session_id, "user_stricken", self.create_field_(field_size))
+        self.put(session_id, "bot_stricken", self.create_field_(field_size))
+        self.put(session_id, "user_hidden", self.create_field_(field_size))
+        self.put(session_id, "bot_hidden", self.create_field_(field_size))
         self.put(session_id, "started", "started")
         self.put(session_id, "step", 0)
-        print("successfully started")
 
     def end_the_game(self, session_id):
         self.delete(session_id, "started")
         self.delete(session_id, "bot")
         self.delete(session_id, "user")
+        self.delete(session_id, "bot_stricken")
+        self.delete(session_id, "user_stricken")
+        self.delete(session_id, "bot_hidden")
+        self.delete(session_id, "user_hidden")
         self.delete(session_id, "step")
-        print("successfully stopped")
 
     def get_board(self, session_id, who):
         """
@@ -59,3 +65,9 @@ class Storage:
         :return: 
         """
         return self.get(session_id, who)
+
+    def set_board(self, session_id, who, x, y):
+        board = self.get(session_id, who)
+        board[x][y] = True
+        return self.put(session_id, who, board)
+

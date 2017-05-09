@@ -9,7 +9,11 @@ If you want to start the new game type /restart
 not_started = """sorry, but you have not started the game yet\
 """
 
-msg_help = """help message\
+game_starting = """ok, new we are starting the game.
+Choose ships arrangement: /random or /manually
+"""
+
+msg_help = """help message
 /start
 /start field_size
 /help
