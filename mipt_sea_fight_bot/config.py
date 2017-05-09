@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-token = "363464663:AAFwj1Qh6MEJgpk3ciyUGaqv-jWfFUPmr3Q"
+token = "<TOKEN>"
 
 # redis
 r_hostname = "localhost"
