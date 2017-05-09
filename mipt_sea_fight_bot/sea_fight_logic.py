@@ -46,10 +46,10 @@ def find_place(field, field_size, ship_size):
 def try_random(field_size):
     field = [[0] * field_size for _ in range(field_size)]
     ships = list(config.battle_ships.keys())
-    print(ships)
+    # print(ships)
     for ship in ships:
-        print(ship)
-        print(config.battle_ships)
+        # print(ship)
+        # print(config.battle_ships)
         for i in range(config.battle_ships[ship]):
             if not find_place(field, field_size, ship):
                 return None

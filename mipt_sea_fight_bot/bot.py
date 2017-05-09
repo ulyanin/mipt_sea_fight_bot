@@ -9,7 +9,6 @@ from telebot import types
 import config
 import storage as key_value_storage
 import messages
-import exception
 import field_drawer
 import sea_fight_logic
 
@@ -196,7 +195,7 @@ def show_my_board(message):
 #     bot.edit_message_text("done", chat_id=message.chat.id, message_id=message.message_id)
 #     bot.send_photo(chat_id=message.chat.id, photo=get_current_board(session))
 #     show_inline_field(message)
-    # bot.edit_message_reply_markup("done")
+#     bot.edit_message_reply_markup("done")
 
 
 @bot.message_handler(commands=["help"])
@@ -309,15 +308,9 @@ def repeat_all_messages(message):
     """
     print("repeat:", message)
     # markup = types.ReplyKeyboardMarkup()
-    session = message.chat.id
     # field_size = storage.get(session, "field_size")
     # field = storage.get(session, "bot_stricken")
     # markup = types.InlineKeyboardMarkup()
-    # itembtna = types.InlineKeyboardButton('a', callback_data='a')
-    # itembtnv = types.InlineKeyboardButton('v', callback_data='v')
-    # itembtnc = types.InlineKeyboardButton('c', callback_data='c')
-    # itembtnd = types.InlineKeyboardButton('d', callback_data='d')
-    # itembtne = types.InlineKeyboardButton('e', callback_data='e')
     # for i in range(field_size):
     #     markup.row(*[
     #         types.InlineKeyboardButton(
@@ -325,11 +318,13 @@ def repeat_all_messages(message):
     #             callback_data=json.dumps((session, i, j))
     #         ) for j in range(field_size)
     #     ])
-    # markup.row(itembtna, itembtnv)
-    # markup.row(itembtnc, itembtnd, itembtne)
     # bot.send_message(message.chat.id, text='make your choice', reply_markup=markup)
     bot.reply_to(message, "don't understand")
 
 
 def run():
     bot.polling(none_stop=True)
+
+
+if __name__ == '__main__':
+    run()

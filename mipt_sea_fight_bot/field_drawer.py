@@ -102,7 +102,6 @@ class FieldDrawer:
                         draw.ellipse([x_low + offset, y_low + offset,
                                       x_high - offset, y_high - offset], fill=hidden_color)
 
-
                 # if self.user_board[x][y]:
                 #     for i in range(2):
                 #         x_pos = cell_size * (x + 1) + border_width * x
